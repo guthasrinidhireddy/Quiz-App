@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <div class="page-header-text">
+    <h1>➕ Add Question</h1>
+  </div>
+  <a href="{{ url_for('admin_dashboard') }}" class="btn-secondary" style="width:auto;">← Back</a>
+</div>
+<div class="auth-card" style="max-width:600px;margin:0 auto;">
+  <form method="POST">
+    <div class="form-group">
+      <label>Subject</label>
+      <select name="subject_id" required>
+        {% for s in subjects %}
+        <option value="{{ s.id }}">{{ s.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Difficulty</label>
+      <select name="difficulty" required>
+        <option value="Easy">Easy</option>
+        <option value="Medium" selected>Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Question</label>
+      <textarea name="question" rows="3" required placeholder="Type your question here..."></textarea>
+    </div>
+    {% for opt in ['a','b','c','d'] %}
+    <div class="form-group">
+      <label>Option {{ opt|upper }}</label>
+      <input type="text" name="option_{{ opt }}" required placeholder="Option {{ opt|upper }}">
+    </div>
+    {% endfor %}
+    <div class="form-group">
+      <label>Correct Answer</label>
+      <select name="correct" required>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        <option value="D">D</option>
+      </select>
+    </div>
+    <button type="submit" class="btn-primary">Add Question →</button>
+  </form>
+</div>
+{% endblock %}

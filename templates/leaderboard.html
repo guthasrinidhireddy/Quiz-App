@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>🏆 Leaderboard</h1>
+  <p>Top scores across all subjects</p>
+</div>
+<div class="leaderboard-table">
+  <div class="lb-row lb-head">
+    <span>Rank</span><span>Player</span><span>Subject</span><span>Score</span><span>Date</span>
+  </div>
+  {% for s in scores %}
+  <div class="lb-row {% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% endif %}">
+    <span>{{ loop.index }}</span>
+    <span>{{ s.username }}</span>
+    <span>{{ s.subject }}</span>
+    <span>{{ s.score }}/{{ s.total }}</span>
+    <span>{{ s.timestamp[:10] }}</span>
+  </div>
+  {% endfor %}
+</div>
+<div class="result-actions">
+  <a href="{{ url_for('index') }}" class="btn-primary">Back to Home</a>
+</div>
+{% endblock %}

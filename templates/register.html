@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Create Account 🚀</h1>
+    <p class="auth-sub">Join QuizMaster today</p>
+    <form method="POST">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Choose a username" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Choose a password" required>
+      </div>
+      <button type="submit" class="btn-primary">Register →</button>
+    </form>
+    <p class="auth-link">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+  </div>
+</div>
+{% endblock %}

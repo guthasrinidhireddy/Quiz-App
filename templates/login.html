@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h1>Welcome Back 👋</h1>
+    <p class="auth-sub">Login to continue your quiz journey</p>
+    <form method="POST">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-primary">Login →</button>
+    </form>
+    <p class="auth-link">Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+  </div>
+</div>
+{% endblock %}

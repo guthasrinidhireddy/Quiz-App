@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="result-header">
+  {% set pct = (score / total * 100)|int %}
+  <div class="score-circle {% if pct >= 70 %}good{% elif pct >= 40 %}ok{% else %}bad{% endif %}">
+    <span class="score-num">{{ score }}/{{ total }}</span>
+    <span class="score-pct">{{ pct }}%</span>
+  </div>
+  <h2>{% if pct >= 70 %}Excellent! 🎉{% elif pct >= 40 %}Good effort! 💪{% else %}Keep practicing! 📚{% endif %}</h2>
+  <p>{{ subject.name }} Quiz — {{ score }} correct out of {{ total }}</p>
+</div>
+<div class="results-list">
+  {% for r in results %}
+  <div class="result-item {{ 'correct' if r.is_correct else 'wrong' }}">
+    <div class="result-q">{{ loop.index }}. {{ r.question }}</div>
+    <div class="result-answers">
+      <span class="your-ans">Your answer: <strong>{{ r.your_answer }} — {{ r.options[r.your_answer] if r.your_answer in r.options else 'Not answered' }}</strong></span>
+      {% if not r.is_correct %}
+      <span class="correct-ans">Correct: <strong>{{ r.correct }} — {{ r.options[r.correct] }}</strong></span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<div class="result-actions">
+  <a href="{{ url_for('index') }}" class="btn-primary">Try Another Quiz</a>
+  <a href="{{ url_for('leaderboard') }}" class="btn-secondary">View Leaderboard</a>
+</div>
+{% endblock %}

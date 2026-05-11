@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="quiz-header">
+  <h2>{{ subject.name }}</h2>
+  <div class="timer-box" id="timer">⏱ <span id="time">10:00</span></div>
+</div>
+<form method="POST" action="{{ url_for('submit', subject_id=subject.id) }}" id="quizForm">
+  {% for q in questions %}
+  <div class="question-card">
+    <div class="question-meta">
+      <div class="question-num">Q{{ loop.index }} / {{ questions|length }}</div>
+      <div class="diff-badge diff-{{ q.difficulty }}">{{ q.difficulty }}</div>
+    </div>
+    <div class="question-text">{{ q.question }}</div>
+    <div class="options">
+      {% for opt, label in [('A', q.option_a), ('B', q.option_b), ('C', q.option_c), ('D', q.option_d)] %}
+      <label class="option-label">
+        <input type="radio" name="q{{ q.id }}" value="{{ opt }}">
+        <span class="opt-key">{{ opt }}</span>
+        <span class="opt-text">{{ label }}</span>
+      </label>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+  <button type="submit" class="btn-primary btn-submit">Submit Quiz ✓</button>
+</form>
+<script>startTimer(600, "quizForm");</script>
+{% endblock %}

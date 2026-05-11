@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="home-header">
+  <h1>Hello, <span>{{ username }}</span> 👋</h1>
+  <p>Pick a subject and test your knowledge</p>
+</div>
+<div class="subjects-grid">
+  {% set icons = ["🐍", "☕", "🌍", "📐", "🌐"] %}
+  {% for subject in subjects %}
+  <a href="{{ url_for('quiz', subject_id=subject.id) }}" class="subject-card">
+    <div class="subject-icon">{{ icons[loop.index0 % icons|length] }}</div>
+    <div class="subject-name">{{ subject.name }}</div>
+    <div class="subject-count">{{ counts.get(subject.id, 0) }} questions</div>
+    <div class="subject-cta">Start Quiz →</div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

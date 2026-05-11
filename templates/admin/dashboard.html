@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-header">
+  <h1>⚙️ Admin Dashboard</h1>
+  <a href="{{ url_for('add_question') }}" class="btn-primary">+ Add Question</a>
+</div>
+<div class="admin-table">
+  <div class="admin-row admin-head">
+    <span>Subject</span><span>Question</span><span>Correct</span><span>Action</span>
+  </div>
+  {% for q in questions %}
+  <div class="admin-row">
+    <span>{{ q.subject_name }}</span>
+    <span>{{ q.question[:60] }}...</span>
+    <span class="correct-badge">{{ q.correct }}</span>
+    <span><a href="{{ url_for('delete_question', qid=q.id) }}" class="btn-delete" onclick="return confirm('Delete this question?')">Delete</a></span>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
