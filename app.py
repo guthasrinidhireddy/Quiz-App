@@ -1,6 +1,5 @@
-import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-import sqlite3, hashlib, random
+import sqlite3, hashlib, random, os
 
 app = Flask(__name__)
 app.secret_key = "quizapp_secret_2024"
@@ -99,7 +98,7 @@ def init_db():
         (subj["General Knowledge"], "What is the speed of light in vacuum?", "3x10^6 m/s", "3x10^8 m/s", "3x10^10 m/s", "3x10^4 m/s", "B", "Medium"),
         (subj["General Knowledge"], "Which country has the most natural lakes?", "USA", "Russia", "Brazil", "Canada", "D", "Medium"),
         (subj["General Knowledge"], "What year did World War II end?", "1943", "1944", "1945", "1946", "C", "Medium"),
-        (subj["General Knowledge"], "What is the Schrödinger's cat thought experiment about?", "Quantum superposition", "Relativity", "String theory", "Dark matter", "A", "Hard"),
+        (subj["General Knowledge"], "What is the Schrodinger's cat thought experiment about?", "Quantum superposition", "Relativity", "String theory", "Dark matter", "A", "Hard"),
         (subj["General Knowledge"], "Which economist proposed the 'invisible hand' concept?", "Keynes", "Marx", "Adam Smith", "Friedman", "C", "Hard"),
         (subj["General Knowledge"], "What is the Coriolis effect?", "Ocean tides", "Deflection of moving objects due to Earth's rotation", "Solar wind", "Magnetic pole shift", "B", "Hard"),
         (subj["General Knowledge"], "What does the Hubble constant measure?", "Speed of light", "Rate of universe expansion", "Galaxy size", "Black hole mass", "B", "Hard"),
@@ -111,14 +110,14 @@ def init_db():
         (subj["Mathematics"], "What is 15% of 200?", "20", "25", "30", "35", "C", "Easy"),
         (subj["Mathematics"], "What is the value of pi (approx)?", "3.14", "3.41", "3.12", "3.16", "A", "Easy"),
         (subj["Mathematics"], "What is 2^10?", "512", "1024", "2048", "256", "B", "Easy"),
-        (subj["Mathematics"], "What is the sum of angles in a triangle?", "90°", "180°", "270°", "360°", "B", "Medium"),
-        (subj["Mathematics"], "What is the derivative of x²?", "x", "2x", "2x²", "x/2", "B", "Medium"),
+        (subj["Mathematics"], "What is the sum of angles in a triangle?", "90", "180", "270", "360", "B", "Medium"),
+        (subj["Mathematics"], "What is the derivative of x squared?", "x", "2x", "2x squared", "x/2", "B", "Medium"),
         (subj["Mathematics"], "Solve: 3x + 7 = 22, x = ?", "3", "4", "5", "6", "C", "Medium"),
-        (subj["Mathematics"], "What is log₁₀(1000)?", "2", "3", "4", "10", "B", "Medium"),
+        (subj["Mathematics"], "What is log base 10 of 1000?", "2", "3", "4", "10", "B", "Medium"),
         (subj["Mathematics"], "How many diagonals does a hexagon have?", "6", "8", "9", "12", "C", "Medium"),
-        (subj["Mathematics"], "What is the integral of 1/x dx?", "x²/2", "ln|x|", "e^x", "1/x²", "B", "Hard"),
-        (subj["Mathematics"], "What is Euler's identity? e^(iπ) + ? = 0", "1", "-1", "i", "0", "A", "Hard"),
-        (subj["Mathematics"], "What is the determinant of [[1,2],[3,4]]?", "2", "-2", "10", "-10", "B", "Hard"),
+        (subj["Mathematics"], "What is the integral of 1/x dx?", "x squared/2", "ln|x|", "e^x", "1/x squared", "B", "Hard"),
+        (subj["Mathematics"], "What is Euler's identity: e^(i*pi) + ? = 0", "1", "-1", "i", "0", "A", "Hard"),
+        (subj["Mathematics"], "What is the determinant of matrix [[1,2],[3,4]]?", "2", "-2", "10", "-10", "B", "Hard"),
         (subj["Mathematics"], "How many prime numbers are between 1 and 50?", "13", "14", "15", "16", "C", "Hard"),
         (subj["Mathematics"], "What is the Fibonacci sequence rule?", "Each number is doubled", "Each number is sum of two before", "Each number is squared", "Each number is prime", "B", "Hard"),
 
@@ -128,15 +127,15 @@ def init_db():
         (subj["Web Development"], "What does CSS stand for?", "Creative Style Sheets", "Cascading Style Sheets", "Computer Style Sheets", "Colorful Style Sheets", "B", "Easy"),
         (subj["Web Development"], "Which property changes text color in CSS?", "font-color", "text-color", "color", "foreground", "C", "Easy"),
         (subj["Web Development"], "What does DOM stand for?", "Document Object Model", "Data Object Management", "Document Oriented Model", "Dynamic Object Method", "A", "Easy"),
-        (subj["Web Development"], "What is the purpose of the 'async' attribute in a script tag?", "Defers script execution", "Loads script asynchronously", "Makes script synchronous", "Prevents script loading", "B", "Medium"),
+        (subj["Web Development"], "What is the purpose of the async attribute in a script tag?", "Defers script execution", "Loads script asynchronously", "Makes script synchronous", "Prevents script loading", "B", "Medium"),
         (subj["Web Development"], "What HTTP method is used to update a resource?", "GET", "POST", "PUT", "DELETE", "C", "Medium"),
         (subj["Web Development"], "What does JSON stand for?", "JavaScript Object Notation", "Java Standard Object Notation", "JavaScript Oriented Network", "Joint Script Object Name", "A", "Medium"),
         (subj["Web Development"], "What is the CSS Box Model order from inside out?", "margin > border > padding > content", "content > padding > border > margin", "padding > content > margin > border", "border > content > padding > margin", "B", "Medium"),
         (subj["Web Development"], "Which CSS property controls the stacking order of elements?", "stack-order", "layer", "z-index", "order", "C", "Medium"),
         (subj["Web Development"], "What is CORS?", "A CSS framework", "Cross-Origin Resource Sharing", "A JavaScript library", "Client-side rendering", "B", "Hard"),
-        (subj["Web Development"], "What is the difference between localStorage and sessionStorage?", "No difference", "localStorage persists after browser close, sessionStorage doesn't", "sessionStorage is larger", "localStorage is encrypted", "B", "Hard"),
+        (subj["Web Development"], "What is the difference between localStorage and sessionStorage?", "No difference", "localStorage persists after browser close sessionStorage does not", "sessionStorage is larger", "localStorage is encrypted", "B", "Hard"),
         (subj["Web Development"], "What is a Service Worker?", "A backend API server", "A script running in background to enable offline features", "A database worker", "A CSS preprocessor", "B", "Hard"),
-        (subj["Web Development"], "What is the purpose of the 'use strict' directive in JavaScript?", "Enables ES6 features", "Enforces stricter parsing and error handling", "Disables debugging", "Enables async functions", "B", "Hard"),
+        (subj["Web Development"], "What is the purpose of use strict in JavaScript?", "Enables ES6 features", "Enforces stricter parsing and error handling", "Disables debugging", "Enables async functions", "B", "Hard"),
         (subj["Web Development"], "What is the Virtual DOM?", "A real browser DOM", "A lightweight copy of DOM used for efficient updates", "A server-side DOM", "A CSS preprocessor", "B", "Hard"),
     ]
 
@@ -208,7 +207,6 @@ def quiz(subject_id):
     if not all_questions:
         flash("No questions available for this subject yet.", "warning")
         return redirect(url_for("index"))
-    # Shuffle and pick 10 random questions each time
     questions = random.sample(list(all_questions), min(10, len(all_questions)))
     return render_template("quiz.html", subject=subject, questions=questions)
 
@@ -217,12 +215,15 @@ def submit(subject_id):
     if "user_id" not in session:
         return redirect(url_for("login"))
     conn = get_db()
-    # Get only the questions that were in this quiz session
+    subject = conn.execute("SELECT * FROM subjects WHERE id=?", (subject_id,)).fetchone()
     qids = [int(k[1:]) for k in request.form.keys() if k.startswith("q")]
+    if not qids:
+        flash("Please answer at least one question!", "warning")
+        conn.close()
+        return redirect(url_for("quiz", subject_id=subject_id))
     questions = conn.execute(
         f"SELECT * FROM questions WHERE id IN ({','.join('?'*len(qids))})", qids
-    ).fetchall() if qids else []
-    subject = conn.execute("SELECT * FROM subjects WHERE id=?", (subject_id,)).fetchone()
+    ).fetchall()
     score = 0
     results = []
     for q in questions:
